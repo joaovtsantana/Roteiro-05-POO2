@@ -1,0 +1,75 @@
+using Xunit;
+
+using System.Collections.Generic;
+using System.Linq;
+namespace AulaTestes
+{
+    public class Item
+    {
+        public string Nome { get; set; }
+        public double Preco { get; set; }
+    }
+    public class Carrinho
+    {
+        private List<Item> itens = new();
+        public void Adicionar(Item item)
+        {
+            itens.Add(item);
+        }
+        public double Total()
+        {
+            return itens.Sum(i => i.Preco);
+        }
+        public int Quantidade()
+        {
+            return itens.Count;
+        }
+        public void Limpar()
+        {
+            itens.Clear();
+        }
+    }
+}
+
+namespace AulaTestes
+{
+    public class CarrinhoTests
+    {
+        [Fact]
+        public void AdicionarItens_DeveSomarOTotalCorretamente()
+        {
+            var carrinho = new Carrinho();
+
+            carrinho.Adicionar(new Item { Nome = "Produto 1", Preco = 10.00 });
+            carrinho.Adicionar(new Item { Nome = "Produto 2", Preco = 20.00 });
+
+            Assert.Equal(30.00, carrinho.Total());
+        }
+
+        [Fact]
+        public void Limpar_DeveZerarOCarrinho()
+        {
+            var carrinho = new Carrinho();
+
+            carrinho.Adicionar(new Item { Nome = "Produto 1", Preco = 10.00 });
+            carrinho.Adicionar(new Item { Nome = "Produto 2", Preco = 20.00 });
+
+            carrinho.Limpar();
+
+            Assert.Equal(0, carrinho.Total());
+            Assert.Equal(0, carrinho.Quantidade());
+        }
+
+        [Fact]
+        public void Quantidade_DeveRetornarNumeroCorretoDeItens()
+        {
+            var carrinho = new Carrinho();
+
+            carrinho.Adicionar(new Item { Nome = "Produto 1", Preco = 10.00 });
+            carrinho.Adicionar(new Item { Nome = "Produto 2", Preco = 20.00 });
+            carrinho.Adicionar(new Item { Nome = "Produto 3", Preco = 30.00 });
+
+            Assert.Equal(3, carrinho.Quantidade());
+        }
+    }
+}
