@@ -1,0 +1,65 @@
+using Xunit;
+
+using System.Text.RegularExpressions;
+namespace AulaTestes
+{
+    public class ValidadorSenha
+    {
+        public bool EhValida(string senha)
+        {
+            if (string.IsNullOrEmpty(senha)) return false;
+            if (senha.Length < 8) return false;
+            bool contemLetra = Regex.IsMatch(senha, "[A-Za-z]");
+            bool contemNumero = Regex.IsMatch(senha, "[0-9]");
+            return contemLetra && contemNumero;
+        }
+    }
+}
+
+
+
+namespace AulaTestes
+{
+    public class ValidadorSenhaTests
+    {
+        [Fact]
+        public void Senha123_DeveSerValida()
+        {
+            var validador = new ValidadorSenha();
+
+            bool resultado = validador.EhValida("Senha123");
+
+            Assert.True(resultado);
+        }
+
+        [Fact]
+        public void ApenasNumeros_DeveSerInvalida()
+        {
+            var validador = new ValidadorSenha();
+
+            bool resultado = validador.EhValida("12345678");
+
+            Assert.False(resultado);
+        }
+
+        [Fact]
+        public void SenhaVazia_DeveSerInvalida()
+        {
+            var validador = new ValidadorSenha();
+
+            bool resultado = validador.EhValida("");
+
+            Assert.False(resultado);
+        }
+
+        [Fact]
+        public void ApenasLetras_DeveSerInvalida()
+        {
+            var validador = new ValidadorSenha();
+
+            bool resultado = validador.EhValida("abcdEFGH");
+
+            Assert.False(resultado);
+        }
+    }
+}
